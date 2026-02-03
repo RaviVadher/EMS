@@ -15,6 +15,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
+
         this.employeeRepository = employeeRepository;
     }
 
@@ -32,9 +33,6 @@ public class EmployeeService {
     //find by id
     public Employee getEmployeeById(Integer id) {
         Employee emp = employeeRepository.findById(id).get();
-        if (emp == null) {
-            throw new RuntimeException("Employee not found");
-        }
         return (emp);
     }
 

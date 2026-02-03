@@ -1,6 +1,9 @@
 package com.example.ems.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +33,9 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    @Operation(summary = "User login", description = "Authenticate user with username and password")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> login(HttpServletResponse response,  @RequestBody Map<String, String> request) {
         String username = request.get("username");
         String password = request.get("password");
 
@@ -43,11 +47,16 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(user.getUsername());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("username", user.getUsername());
+        Map<String, Object> responseDTO = new HashMap<>();
+        responseDTO.put("token", token);
+        responseDTO.put("username", user.getUsername());
 
-        return ResponseEntity.ok(response);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.ems.config;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +9,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -28,11 +31,25 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
+//        String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
+        String header = "";
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for (Cookie c: cookies) {
+                if (c.getName().equals("token")) {
+                    header = c.getValue();
+                }
+            }
+        }
 
-            String token = header.substring(7);
+
+
+        if (header != null ) {
+
+         // String token = header.substring(7);
+            String token = header;
+         //   System.out.println("token" + token);
 
             try {
                 String username = jwtUtil.extractUsername(token);

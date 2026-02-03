@@ -28,7 +28,7 @@ public class UsersService {
     }
 
     public Users registerUser(Users user) {
-        if(usersRepository.existsByUsername(user.getUsername())) {
+        if (usersRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Username already taken");
         } else if (user.getPassword().length() < 6) {
             throw new RuntimeException("Password must be at least 6 characters");
@@ -45,34 +45,4 @@ public class UsersService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public boolean login(String username, String rawPassword) {
-        return usersRepository.findByUsername(username)
-                .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
-                .orElse(false);
-    }
-    public List<UserDTO> getAllUsers() {
-        List<Users> users = usersRepository.findAll();
-
-        List<UserDTO> dtos = users.stream()
-                .map(user -> new UserDTO(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail()
-                ))
-                .collect(Collectors.toList());
-
-        return dtos;
-    }
-
-
-    public boolean deleteUserById(Integer id) {
-        if(usersRepository.existsById(id)) {
-            usersRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-
 }
-

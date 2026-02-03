@@ -2,6 +2,7 @@ package com.example.ems.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class Users {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Email(message = "mail should be in right formate")
     @Column(length = 150)
     private String email;
 

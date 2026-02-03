@@ -11,10 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
-    @Modifying
-    @Transactional
-    @Query("UPDATE Employee e SET e.fullName = :#{#emp.fullName}, e.department = :#{#emp.department}, e.position = :#{#emp.position}, e.email = :#{#emp.email}, e.phone = :#{#emp.phone} WHERE e.id = :#{#emp.id}")
-    void updateEmployee(@Param("emp") Employee emp);
+
 
 }
 

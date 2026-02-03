@@ -2,10 +2,9 @@ package com.example.ems.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,15 +21,18 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "name should be not empty")
     @Column(name = "full_name", nullable = false, length = 150)
     private String fullName;
 
+    @NotBlank(message = "department should be not empty")
     @Column(length = 100)
     private String department;
 
     @Column(length = 100)
     private String position;
 
+    @Email(message = "email should be in right formte")
     @Column(length = 150)
     private String email;
 
